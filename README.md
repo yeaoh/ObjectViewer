@@ -15,6 +15,10 @@ Salesforceのオブジェクト、項目を一覧表示します
 * 項目一覧をCSV出力
 * 被参照オブジェクトの一覧を表示
 
+#### 注意
+* 階層型は、ユーザオブジェクトへの参照関係項目として表示します
+* 積み上げ集計は、集計対象オブジェクトと、集計方法は表示されません
+
 ## Licence
 
 [MIT](https://github.com/yeaoh/ObjectViewer/blob/master/LICENSE)
