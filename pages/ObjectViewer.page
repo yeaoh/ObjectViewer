@@ -1,0 +1,26 @@
+<apex:page controller="ObjectViewerController" action="{!doViewObjectList}" title="オブジェクト一覧">
+	<style>
+		.rich-tabpanel-content, .rich-tab-header {
+			font-size: 100%;
+		}
+	</style>
+
+	<apex:pageMessages />
+
+	<apex:form id="frm">
+		<apex:pageBlock title="オブジェクト情報" >
+			<apex:tabPanel switchType="client" selectedTab="tab1" >
+				<apex:tab label="カスタム" name="tab1" >
+					<c:ObjectViewerObjectList schemaSObjects="{!customObjects}" />
+				</apex:tab>
+				<apex:tab label="標準" name="tab2" >
+					<c:ObjectViewerObjectList schemaSObjects="{!standardObjects}" />
+				</apex:tab>
+				<apex:tab label="その他" name="tab3" >
+					<c:ObjectViewerObjectList schemaSObjects="{!etcObjects}" />
+				</apex:tab>
+			</apex:tabPanel>
+		</apex:pageBlock>
+	</apex:form>
+
+</apex:page>

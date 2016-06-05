@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ObjectViewerController</members>
+        <members>ObjectViewerSchemaObject</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ObjectViewerObjectList</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>ObjectViewer</members>
+        <members>ObjectViewerField</members>
+        <members>ObjectViewerFieldCsv</members>
+        <name>ApexPage</name>
+    </types>
+    <version>34.0</version>
+</Package>

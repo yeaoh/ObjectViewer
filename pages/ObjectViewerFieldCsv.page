@@ -1,0 +1,6 @@
+<apex:page contentType="text/csv;charset=Shift_JIS;#{!selectedObject.name}.csv" controller="ObjectViewerController" action="{!doViewFieldList}">"{!selectedObject.label}","{!selectedObject.name}","{!selectedObject.prefix}"
+"表示ラベル","API参照名","データ型","参照先","桁数","選択リスト値","数式","カスタム","必須"
+	<apex:repeat value="{!schemaFields}" var="schemaField">
+"{!schemaField.label}","{!schemaField.name}","{!schemaField.typeLabel}","{!schemaField.referencesForCsv}","{!schemaField.length}","{!schemaField.picklistValuesForCsv}",{!schemaField.formulaForCsv},"{!IF(schemaField.custom, '○', '')}","{!IF(schemaField.nillable, '', '○')}"
+	</apex:repeat>
+</apex:page>

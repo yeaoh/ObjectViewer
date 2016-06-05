@@ -1,0 +1,112 @@
+<apex:page controller="ObjectViewerController" action="{!doViewFieldList}" title="項目情報（{!selectedObject.label}）" >
+	<script type="text/javascript">
+		<!-- 一覧のチェックボックスをON/OFFする -->
+		function clickHeaderCheckbox(cb){
+			var inputElem = document.getElementsByTagName("input");
+			for(var i = 0; i < inputElem.length; i++){
+				if(inputElem[i].id.indexOf("selected") != -1){
+					inputElem[i].checked = cb.checked;
+				}
+			}
+		}
+	</script>
+
+	<apex:pageMessages />
+
+	<apex:form id="frm">
+		<apex:pageBlock title="オブジェクト情報" >
+			<apex:pageBlockSection columns="2">
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="表示ラベル" />
+					<apex:outputText value="{!selectedObject.label}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="API参照名" />
+					<apex:outputText value="{!selectedObject.name}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="プレフィックス" />
+					<apex:outputText value="{!selectedObject.prefix}" />
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					<apex:outputPanel layout="none" id="pnl" />
+					<apex:outputPanel layout="none" >
+						<apex:commandButton value="CSV出力" onclick="window.open('/apex/ObjectViewerFieldCsv?key={!selectedObject.name}'); return false;" reRender="pnl" />
+						<apex:commandButton value="データ表示" onclick="window.open('/{!selectedObject.prefix}'); return false;" reRender="pnl" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<apex:pageBlock title="項目情報" >
+			<apex:pageBlockSection columns="1" title="クエリ">
+				<apex:commandButton value="クエリ生成" action="{!doGenerateQuery}" reRender="queryText" />
+				<apex:inputTextarea id="queryText" value="{!queryText}" style="width: 99%; height: 4em;" />
+			</apex:pageBlockSection>
+			<apex:pageBlockTable value="{!schemaFields}" var="schemaField">
+				<apex:column headerValue="">
+					<apex:facet name="header">
+						<apex:inputCheckbox id="allCheck" onclick="javaScript:clickHeaderCheckbox(this);" />
+					</apex:facet>
+					<apex:inputCheckbox id="selected" value="{!schemaField.selected}" />
+				</apex:column>
+				<apex:column headerValue="表示ラベル">
+					<apex:outputLabel value="{!schemaField.label}"/>
+				</apex:column>
+				<apex:column headerValue="API参照名">
+					<apex:outputLabel value="{!schemaField.name}"/>
+				</apex:column>
+				<apex:column headerValue="データ型">
+					<apex:outputLabel value="{!schemaField.typeLabel}"/>
+				</apex:column>
+				<apex:column headerValue="参照先">
+					<apex:repeat value="{!schemaField.references}" var="reference" >
+						<apex:outputLink value="/apex/ObjectViewerField?key={!reference['name']}" target="_blank" >
+							<apex:outputText value="{!reference['label']}"/>
+						</apex:outputLink><br/>
+					</apex:repeat>
+				</apex:column>
+				<apex:column headerValue="桁数">
+					<apex:outputLabel value="{!schemaField.length}"/>
+				</apex:column>
+				<apex:column headerValue="選択リスト値">
+					<apex:repeat value="{!schemaField.picklistValues}" var="picklistValue" >
+						<apex:outputLabel value="{!picklistValue}" /><br/>
+					</apex:repeat>
+				</apex:column>
+				<apex:column headerValue="数式">
+					<apex:outputLabel value="{!schemaField.formula}"/>
+				</apex:column>
+				<apex:column headerValue="カスタム">
+					<apex:outputLabel value="{!IF(schemaField.custom, '○', '')}"/>
+				</apex:column>
+				<apex:column headerValue="必須">
+					<apex:outputLabel value="{!IF(schemaField.nillable, '', '○')}"/>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+
+		<apex:pageBlock title="リレーション情報" >
+			<apex:pageBlockTable value="{!childRelationships}" var="childRelationship">
+				<apex:column headerValue="オブジェクト名">
+					<apex:outputLink value="/apex/ObjectViewerField?key={!childRelationship.objectName}" target="_blank" >
+						<apex:outputText value="{!childRelationship.objectLabel}"/>
+					</apex:outputLink>
+				</apex:column>
+				<apex:column headerValue="API参照名">
+					<apex:outputLabel value="{!childRelationship.objectName}"/>
+				</apex:column>
+				<apex:column headerValue="項目名">
+					<apex:outputLabel value="{!childRelationship.fieldLabel}"/>
+				</apex:column>
+				<apex:column headerValue="API参照名">
+					<apex:outputLabel value="{!childRelationship.fieldName}"/>
+				</apex:column>
+				<apex:column headerValue="子リレーション名">
+					<apex:outputLabel value="{!childRelationship.relationshipName}"/>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+
+	</apex:form>
+</apex:page>
